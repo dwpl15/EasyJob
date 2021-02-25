@@ -6,10 +6,25 @@ ALTER USER postgres WITH PASSWORD 'postgres';
 
 CREATE DATABASE easyjob;
 
+CREATE TABLE "requirements" (
+    "id" SERIAL PRIMARY KEY,
+    "name" text NOT NULL
+);
+
+CREATE TABLE "vacancies" (
+    "id" SERIAL PRIMARY KEY,
+    "name" text NOT NULL,
+    "requirements" text[],
+    "available" int,
+    "company_id" int,
+    "created_at" timestamp DEFAULT (now()),
+    "updated_at" timestamp DEFAULT (now())
+);
+
 CREATE TABLE "admin" (
     "id" SERIAL PRIMARY KEY,
     "user_id" int
-)
+);
 
 CREATE TABLE "company" (
     "id" SERIAL PRIMARY KEY,
@@ -19,20 +34,22 @@ CREATE TABLE "company" (
 CREATE TABLE "candidate" (
     "id" SERIAL PRIMARY KEY,
     "user_id" int
-)
+);
 
 CREATE TABLE "users" (
     "id" SERIAL PRIMARY KEY,
-    "name" text NOT NULL
+    "name" text NOT NULL,
     "email" text UNIQUE NOT NULL,
     "password" text,
     "cpf_cnpj" text UNIQUE NOT NULL,
     "cep" text,
     "address" text,
     "reset_token" text,
-    "reset_token_expires" text,
-)
+    "reset_token_expires" text
+);
 
+
+ALTER TABLE "vacancies" ADD FOREIGN KEY ("company_id") REFERENCES "company" ("id") ON DELETE CASCADE;
 ALTER TABLE "admin" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-ALTER TABLE "" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
-ALTER TABLE "" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
+ALTER TABLE "company" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
+ALTER TABLE "candidate" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
