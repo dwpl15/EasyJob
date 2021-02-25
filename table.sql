@@ -6,11 +6,6 @@ ALTER USER postgres WITH PASSWORD 'postgres';
 
 CREATE DATABASE easyjob;
 
-CREATE TABLE "requirements" (
-    "id" SERIAL PRIMARY KEY,
-    "name" text NOT NULL
-);
-
 CREATE TABLE "vacancies" (
     "id" SERIAL PRIMARY KEY,
     "name" text NOT NULL,
